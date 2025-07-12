@@ -50,8 +50,9 @@ app.post('/convert', upload.single('image'), async (req, res) => {
 
         console.log(`Converting image: ${req.file.originalname} (${req.file.mimetype})`);
 
-        // Convert image to PNG using Sharp
+        // Convert image to PNG using Sharp with RGBA format (required by OpenAI)
         const pngBuffer = await sharp(req.file.buffer)
+            .ensureAlpha() // Ensure alpha channel is present (RGB -> RGBA)
             .png()
             .toBuffer();
 
@@ -63,9 +64,11 @@ app.post('/convert', upload.single('image'), async (req, res) => {
             success: true,
             originalFormat: req.file.mimetype,
             convertedFormat: 'image/png',
+            colorSpace: 'RGBA', // OpenAI compatible format
             originalSize: req.file.size,
             convertedSize: pngBuffer.length,
-            base64: base64Image
+            base64: base64Image,
+            note: 'Output format is RGBA PNG, compatible with OpenAI Vision API'
         });
 
     } catch (error) {

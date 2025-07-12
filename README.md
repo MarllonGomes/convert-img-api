@@ -17,6 +17,7 @@ A simple Node.js API service that converts uploaded images to PNG format and ret
   - **BMP** ✅
   - And many more formats supported by Sharp
 - Converts to PNG format using Sharp library
+- **RGBA format output** - Compatible with OpenAI Vision API
 - Returns base64 encoded result
 - 10MB file size limit
 - Docker support for easy deployment
